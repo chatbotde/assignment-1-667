@@ -1,0 +1,29 @@
+{
+  "physics": {
+    "BEMT_theory": "Blade Element Momentum Theory with Prandtl tip loss",
+    "airfoil_model": "Linear lift curve with quadratic drag polar",
+    "inflow_model": "Uniform inflow with tip loss correction",
+    "compressibility": "Tip Mach number warning only, no corrections",
+    "stall_model": "Simple angle of attack limit"
+  },
+  "environmental": {
+    "atmosphere": "ISA (International Standard Atmosphere)",
+    "temperature_variation": "Standard lapse rate",
+    "wind_effects": "Included in mission planner cruise segments",
+    "ground_effect": "Not modeled",
+    "turbulence": "Not modeled"
+  },
+  "vehicle": {
+    "rotor_geometry": "R=0.762m, B=4 blades",
+    "airfoil_data": "a0=5.75, Cd0=0.0113",
+    "fuselage_drag": "Included in mission planner",
+    "tail_rotor": "Power fraction method",
+    "engine_losses": "10% installed power loss assumed"
+  },
+  "flight_conditions": {
+    "hover": "Zero forward velocity, vertical equilibrium",
+    "forward_flight": "Steady level flight",
+    "climb": "Constant climb rate",
+    "atmospheric_conditions": "Variable with altitude per ISA"
+  }
+}

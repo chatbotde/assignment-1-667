@@ -1,0 +1,6 @@
+{
+  "altitude_m": 2000,
+  "max_weight_stall_kg": 2500.0,
+  "max_weight_power_kg": 4500.0,
+  "available_power_kW": 1350
+}

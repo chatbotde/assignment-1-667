@@ -1,0 +1,101 @@
+{
+  "main_rotor": {
+    "description": "Main lift rotor optimized for hover and low-speed flight",
+    "role": "Primary lift generation, hover capability",
+    "radius_m": 8.5,
+    "rpm": 320,
+    "num_blades": 4,
+    "airfoil": "NACA 0012 modified",
+    "chord_root_m": 0.45,
+    "chord_tip_m": 0.25,
+    "twist_deg": 8,
+    "root_cutout_m": 1.0,
+    "tip_mach_limit": 0.85,
+    "solidity": 0.08
+  },
+  "tail_rotor": {
+    "description": "Anti-torque tail rotor",
+    "role": "Yaw control and torque balance",
+    "radius_m": 1.8,
+    "rpm": 1600,
+    "num_blades": 4,
+    "airfoil": "NACA 0012",
+    "chord_root_m": 0.15,
+    "chord_tip_m": 0.1,
+    "twist_deg": 0,
+    "root_cutout_m": 0.2,
+    "power_fraction": 0.12
+  },
+  "pusher_propeller": {
+    "description": "Pusher propeller for high-speed cruise",
+    "role": "Forward thrust for high-speed flight",
+    "radius_m": 1.5,
+    "rpm": 2400,
+    "num_blades": 3,
+    "airfoil": "Propeller airfoil",
+    "chord_root_m": 0.2,
+    "chord_tip_m": 0.08,
+    "twist_deg": 25,
+    "root_cutout_m": 0.15
+  },
+  "wings": {
+    "description": "Fixed wings for rotor unloading at high speed",
+    "role": "Lift generation at high forward speeds",
+    "span_m": 12.0,
+    "chord_m": 1.8,
+    "area_m2": 21.6,
+    "aspect_ratio": 6.67,
+    "airfoil": "NACA 23012",
+    "incidence_deg": 2,
+    "dihedral_deg": 5
+  },
+  "mass_breakdown": {
+    "payload_kg": 700,
+    "crew_kg": 140,
+    "fuel_kg": 800,
+    "main_rotor_kg": 450,
+    "tail_rotor_kg": 80,
+    "pusher_prop_kg": 60,
+    "wings_kg": 200,
+    "fuselage_kg": 600,
+    "landing_gear_kg": 120,
+    "engines_kg": 400,
+    "systems_kg": 300,
+    "structure_kg": 400,
+    "empty_weight_kg": 2610,
+    "operating_empty_kg": 2750,
+    "max_takeoff_kg": 7000
+  },
+  "dimensions": {
+    "length_m": 18.5,
+    "height_m": 4.8,
+    "width_m": 2.8,
+    "main_rotor_diameter_m": 17.0,
+    "tail_rotor_diameter_m": 3.6
+  },
+  "performance": {
+    "hover_sl": {
+      "thrust_N": 56474.8113146637,
+      "power_kW": 1032.2793674130917
+    },
+    "hover_3500m": {
+      "thrust_N": 39796.4677999026,
+      "power_kW": 727.4229280176849
+    },
+    "forward_180kmh": {
+      "thrust_N": 63871.05083323528,
+      "power_kW": -3129.2412067165
+    },
+    "disk_loading_N_m2": 248.80956071725475,
+    "tip_speed_ms": 284.83773392547454
+  },
+  "requirements": {
+    "max_takeoff_altitude_m": 3500,
+    "desired_top_speed_kmh": 400,
+    "service_ceiling_m": 5000,
+    "range_km": 500,
+    "payload_persons": 10,
+    "person_mass_kg": 70,
+    "total_payload_kg": 700
+  }
+}
