@@ -2,7 +2,7 @@ Flight Simulator Program — Part 1
 =================================
 
 This folder contains a **self‑contained, modular** implementation of the Flight
-Simulator part of your assignment. It follows the guidelines:
+Simulator part of  assignment. It follows the guidelines:
 
 1) Free language: **Python 3** (uses only stdlib + numpy).
 2) Modular files (one module per requirement) with preamble docstrings.
@@ -50,4 +50,4 @@ Notes & assumptions
 - Azimuthal inflow variation is included in the instantaneous integrator.
 - The stabilizer model is linear; tune gains to your configuration.
 
-Enjoy! 
+ 
