@@ -19,11 +19,6 @@ from datetime import datetime
 sys.path.append('flight_sim_part1')
 
 from user_inputs import get_user_inputs, build_rotor
-from atmosphere import isa_properties
-from integrators import cycle_integrator
-from blade import Blade
-from rotor import Rotor
-from airfoil import Airfoil
 
 class HelicopterSimulatorGUI:
     def __init__(self, root):
@@ -301,101 +296,35 @@ class HelicopterSimulatorGUI:
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         
     def calculate_forces_and_moments(self):
-        """Calculate forces and moments from helicopter components"""
+        """Calculate forces and moments using shared utilities"""
         try:
-            # Get atmospheric conditions
-            rho, a = isa_properties(self.altitude.get())
+            # Use shared calculation utilities
+            from rotor_utils import rotor_calc
             
-            # Main rotor calculation
-            rpm = 960 * (self.throttle.get() / 100.0)  # Scale RPM with throttle
-            omega = 2 * np.pi * rpm / 60.0
-            
-            # Create main rotor with current collective pitch
-            collective_rad = np.deg2rad(self.collective_pitch.get())
-            cyclic_rad = np.deg2rad(self.cyclic_pitch.get())
-            
-            # Simple rotor model for demonstration
-            main_blade = Blade(
-                self.main_rotor.blade.R_root,
-                self.main_rotor.blade.R_tip,
-                self.main_rotor.blade.c_root,
-                self.main_rotor.blade.c_tip,
-                collective_rad,
-                collective_rad - np.deg2rad(2),  # 2° twist
-                self.main_rotor.blade.airfoil
+            results = rotor_calc.calculate_forces_moments(
+                self.collective_pitch.get(),
+                self.cyclic_pitch.get(),
+                0,  # No roll cyclic in this simplified model
+                self.tail_rotor_pitch.get(),
+                self.throttle.get(),
+                self.altitude.get()
             )
-            main_rotor = Rotor(self.main_rotor.B, main_blade)
-            
-            # Calculate main rotor performance
-            T_main, Q_main, P_main = cycle_integrator(
-                main_rotor, self.forward_speed.get(), omega, rho)
-            
-            # Tail rotor (simplified)
-            tail_pitch_rad = np.deg2rad(self.tail_rotor_pitch.get())
-            T_tail = 500 * (tail_pitch_rad / np.deg2rad(10))  # Simplified model
-            Q_tail = T_tail * 0.1  # Simplified torque
-            
-            # Transform to aircraft reference frame
-            # Main rotor forces (affected by cyclic)
-            Fx_main = T_main * np.sin(cyclic_rad)  # Forward/backward
-            Fy_main = 0  # No lateral force from main rotor in this model
-            Fz_main = T_main * np.cos(cyclic_rad)  # Vertical (up positive)
-            
-            # Tail rotor forces
-            Fx_tail = 0
-            Fy_tail = T_tail  # Side force for anti-torque
-            Fz_tail = 0
-            
-            # Total forces
-            Fx_total = Fx_main + Fx_tail
-            Fy_total = Fy_main + Fy_tail
-            Fz_total = Fz_main + Fz_tail
-            
-            # Calculate moments about center of gravity
-            main_pos = self.components['main_rotor']
-            tail_pos = self.components['tail_rotor']
-            cg_pos = self.components['cg']
-            
-            # Moment arms
-            dx_main = main_pos['x'] - cg_pos['x']
-            dy_main = main_pos['y'] - cg_pos['y']
-            dz_main = main_pos['z'] - cg_pos['z']
-            
-            dx_tail = tail_pos['x'] - cg_pos['x']
-            dy_tail = tail_pos['y'] - cg_pos['y']
-            dz_tail = tail_pos['z'] - cg_pos['z']
-            
-            # Moments (using cross product: r × F)
-            # Main rotor moments
-            Mx_main = Fy_main * dz_main - Fz_main * dy_main
-            My_main = Fz_main * dx_main - Fx_main * dz_main
-            Mz_main = Fx_main * dy_main - Fy_main * dx_main + Q_main
-            
-            # Tail rotor moments
-            Mx_tail = Fy_tail * dz_tail - Fz_tail * dy_tail
-            My_tail = Fz_tail * dx_tail - Fx_tail * dz_tail
-            Mz_tail = Fx_tail * dy_tail - Fy_tail * dx_tail - Q_tail
-            
-            # Total moments
-            Mx_total = Mx_main + Mx_tail
-            My_total = My_main + My_tail
-            Mz_total = Mz_main + Mz_tail
             
             # Update forces and moments
             self.forces_moments = {
-                'Fx': Fx_total,
-                'Fy': Fy_total,
-                'Fz': Fz_total,
-                'Mx': Mx_total,
-                'My': My_total,
-                'Mz': Mz_total
+                'Fx': results['Fx'],
+                'Fy': results['Fy'],
+                'Fz': results['Fz'],
+                'Mx': results['Mx'],
+                'My': results['My'],
+                'Mz': results['Mz']
             }
             
             # Performance metrics
             self.performance = {
-                'thrust': T_main,
-                'power': P_main / 1000,  # kW
-                'efficiency': T_main / (P_main / 1000) if P_main > 0 else 0
+                'thrust': results['thrust'],
+                'power': results['power'],
+                'efficiency': results['thrust'] / results['power'] if results['power'] > 0 else 0
             }
             
         except Exception as e:

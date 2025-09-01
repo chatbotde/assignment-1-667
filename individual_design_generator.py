@@ -14,12 +14,7 @@ from datetime import datetime
 # Add flight sim path
 sys.path.append('flight_sim_part1')
 
-from user_inputs import get_user_inputs, build_rotor
 from atmosphere import isa_properties
-from integrators import cycle_integrator
-from blade import Blade
-from rotor import Rotor
-from airfoil import Airfoil
 
 class CompoundHelicopterDesigner:
     def __init__(self):
@@ -319,38 +314,19 @@ class CompoundHelicopterDesigner:
         plt.close()
 
     def calculate_rotor_performance(self, rotor_config, theta_range):
-        """Calculate rotor performance over pitch range"""
+        """Calculate rotor performance over pitch range using shared utilities"""
+        from rotor_utils import rotor_calc
+        
         thrust_values = []
         power_values = []
         
-        # Create rotor model
-        if rotor_config == self.main_rotor:
-            airfoil = Airfoil(a0=5.7, Cd0=0.008, e=1.2)
-            omega = 2 * np.pi * rotor_config["rpm"] / 60.0
-        else:  # Tail rotor
-            airfoil = Airfoil(a0=5.5, Cd0=0.010, e=1.3)
-            omega = 2 * np.pi * rotor_config["rpm"] / 60.0
-        
-        rho, _ = isa_properties(0)  # Sea level
-        
         for theta_deg in theta_range:
-            theta_rad = np.deg2rad(theta_deg)
-            
-            blade = Blade(
-                R_root=rotor_config["root_cutout_m"],
-                R_tip=rotor_config["radius_m"],
-                c_root=rotor_config["chord_root_m"],
-                c_tip=rotor_config["chord_tip_m"],
-                theta_root_rad=theta_rad,
-                theta_tip_rad=theta_rad - np.deg2rad(rotor_config.get("twist_deg", 0)),
-                airfoil=airfoil
+            results = rotor_calc.calculate_rotor_performance(
+                rotor_config, theta_deg, 
+                forward_speed=0, altitude=0, rpm=rotor_config["rpm"]
             )
-            
-            rotor = Rotor(rotor_config["num_blades"], blade)
-            T, Q, P = cycle_integrator(rotor, 0, omega, rho)
-            
-            thrust_values.append(T)
-            power_values.append(P/1000)  # Convert to kW
+            thrust_values.append(results['thrust_N'])
+            power_values.append(results['power_kW'])
         
         return thrust_values, power_values
 
