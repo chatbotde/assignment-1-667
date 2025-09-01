@@ -13,7 +13,6 @@ import numpy as np
 import time
 import sys
 import os
-from datetime import datetime
 
 # Add flight sim path
 sys.path.append('flight_sim_part1')
@@ -46,7 +45,7 @@ class HelicopterSimulatorGUI:
             'Mx': 0.0, 'My': 0.0, 'Mz': 0.0
         }
         
-        # Data storage for plotting
+        # Simplified data storage (reduced from 100 to 20 points)
         self.time_data = []
         self.force_history = {key: [] for key in self.forces_moments.keys()}
         self.start_time = time.time()
@@ -65,19 +64,16 @@ class HelicopterSimulatorGUI:
         self.fs_inputs = get_user_inputs()
         self.main_rotor = build_rotor(self.fs_inputs["rotor"])
         
-        # Component positions relative to helicopter nose (meters)
+        # Essential component positions (removed mass data - not needed for GUI)
         self.components = {
-            'main_rotor': {'x': 0.0, 'y': 0.0, 'z': 2.5, 'mass': 200},
-            'tail_rotor': {'x': -4.0, 'y': 0.0, 'z': 2.0, 'mass': 30},
-            'fuselage': {'x': -1.0, 'y': 0.0, 'z': 1.0, 'mass': 1500},
-            'engine': {'x': -0.5, 'y': 0.0, 'z': 1.5, 'mass': 300},
-            'fuel': {'x': -1.5, 'y': 0.0, 'z': 1.0, 'mass': 400},
+            'main_rotor': {'x': 0.0, 'y': 0.0, 'z': 2.5},
+            'tail_rotor': {'x': -4.0, 'y': 0.0, 'z': 2.0},
             'cg': {'x': -1.0, 'y': 0.0, 'z': 1.5}  # Center of gravity
         }
         
         print("✓ Helicopter simulator initialized")
         print(f"  Main rotor: {self.main_rotor.blade.R_tip:.2f}m radius")
-        print(f"  Components positioned relative to aircraft reference frame")
+        print(f"  Simplified component model loaded")
         
     def create_gui(self):
         """Create the main GUI interface"""
@@ -134,15 +130,12 @@ class HelicopterSimulatorGUI:
         self.create_control_slider(control_frame, "Forward Speed", self.forward_speed, 
                                  0, 50, "m/s", "Forward flight speed")
         
-        # Control buttons
+        # Control buttons (removed data export functionality)
         button_frame = tk.Frame(control_frame, bg='#34495e')
         button_frame.pack(fill=tk.X, pady=20)
         
         tk.Button(button_frame, text="Reset Controls", command=self.reset_controls,
                  bg='#e74c3c', fg='white', font=('Arial', 10, 'bold')).pack(fill=tk.X, pady=2)
-        
-        tk.Button(button_frame, text="Save Data", command=self.save_data,
-                 bg='#27ae60', fg='white', font=('Arial', 10, 'bold')).pack(fill=tk.X, pady=2)
         
     def create_control_slider(self, parent, name, variable, min_val, max_val, unit, description):
         """Create a control slider with label"""
@@ -224,13 +217,13 @@ class HelicopterSimulatorGUI:
             label.pack(side=tk.RIGHT)
             self.force_labels[moment] = label
         
-        # Performance info
+        # Simplified performance info (removed redundant efficiency display)
         perf_frame = tk.LabelFrame(display_frame, text="Performance", 
                                   font=('Arial', 11, 'bold'), bg='#34495e', fg='white')
         perf_frame.pack(fill=tk.X, pady=5)
         
         self.perf_labels = {}
-        perf_items = [('Thrust', 'N', '#e67e22'), ('Power', 'kW', '#8e44ad'), ('Efficiency', 'N/kW', '#16a085')]
+        perf_items = [('Thrust', 'N', '#e67e22'), ('Power', 'kW', '#8e44ad')]
         
         for name, unit, color in perf_items:
             frame = tk.Frame(perf_frame, bg='#34495e')
@@ -323,15 +316,14 @@ class HelicopterSimulatorGUI:
             # Performance metrics
             self.performance = {
                 'thrust': results['thrust'],
-                'power': results['power'],
-                'efficiency': results['thrust'] / results['power'] if results['power'] > 0 else 0
+                'power': results['power']
             }
             
         except Exception as e:
             print(f"Calculation error: {e}")
             # Set safe default values
             self.forces_moments = {key: 0.0 for key in self.forces_moments.keys()}
-            self.performance = {'thrust': 0, 'power': 0, 'efficiency': 0}
+            self.performance = {'thrust': 0, 'power': 0}
     
     def update_displays(self):
         """Update all display elements"""
@@ -343,7 +335,6 @@ class HelicopterSimulatorGUI:
         # Update performance labels
         self.perf_labels['Thrust'].config(text=f"{self.performance['thrust']:.1f} N")
         self.perf_labels['Power'].config(text=f"{self.performance['power']:.1f} kW")
-        self.perf_labels['Efficiency'].config(text=f"{self.performance['efficiency']:.1f} N/kW")
         
     def update_plots(self):
         """Update real-time plots"""
@@ -386,17 +377,17 @@ class HelicopterSimulatorGUI:
         for key in self.forces_moments:
             self.force_history[key].append(self.forces_moments[key])
         
-        # Keep only last 100 points
-        if len(self.time_data) > 100:
-            self.time_data = self.time_data[-100:]
+        # Keep only last 20 points (reduced from 100)
+        if len(self.time_data) > 20:
+            self.time_data = self.time_data[-20:]
             for key in self.force_history:
-                self.force_history[key] = self.force_history[key][-100:]
+                self.force_history[key] = self.force_history[key][-20:]
         
         # Update plots
         self.update_plots()
         
-        # Schedule next update (10 Hz)
-        self.root.after(100, self.update_loop)
+        # Schedule next update (5 Hz - reduced from 10 Hz)
+        self.root.after(200, self.update_loop)
     
     def reset_controls(self):
         """Reset all controls to default values"""
@@ -413,36 +404,7 @@ class HelicopterSimulatorGUI:
             self.force_history[key] = []
         self.start_time = time.time()
         
-    def save_data(self):
-        """Save simulation data to CSV file"""
-        if not self.time_data:
-            messagebox.showwarning("No Data", "No simulation data to save!")
-            return
-        
-        try:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"helicopter_sim_data_{timestamp}.csv"
-            
-            with open(filename, 'w') as f:
-                # Header
-                f.write("Time,Fx,Fy,Fz,Mx,My,Mz,Collective,Cyclic,TailRotor,Throttle,Altitude,Speed\n")
-                
-                # Data
-                for i in range(len(self.time_data)):
-                    f.write(f"{self.time_data[i]:.2f}")
-                    for key in ['Fx', 'Fy', 'Fz', 'Mx', 'My', 'Mz']:
-                        f.write(f",{self.force_history[key][i]:.2f}")
-                    f.write(f",{self.collective_pitch.get():.1f}")
-                    f.write(f",{self.cyclic_pitch.get():.1f}")
-                    f.write(f",{self.tail_rotor_pitch.get():.1f}")
-                    f.write(f",{self.throttle.get():.1f}")
-                    f.write(f",{self.altitude.get():.1f}")
-                    f.write(f",{self.forward_speed.get():.1f}\n")
-            
-            messagebox.showinfo("Success", f"Data saved to {filename}")
-            
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to save data: {e}")
+
 
 def main():
     """Main function"""
@@ -459,7 +421,7 @@ def main():
         print("1. Adjust control sliders to change helicopter settings")
         print("2. Watch forces and moments update in real-time")
         print("3. Observe the effect on the plots")
-        print("4. Use 'Save Data' to export results for analysis")
+
         print("\nDemonstrating Bonus Task Requirements:")
         print("- Real-time forces and moments calculation")
         print("- Component placement and reference frame")

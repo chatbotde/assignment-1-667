@@ -15,6 +15,10 @@ from datetime import datetime
 sys.path.append('flight_sim_part1')
 
 from atmosphere import isa_properties
+from airfoil import Airfoil
+from blade import Blade
+from rotor import Rotor
+from integrators import cycle_integrator
 
 class CompoundHelicopterDesigner:
     def __init__(self):
