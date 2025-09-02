@@ -23,34 +23,20 @@
 - **Output:** Thrust=2.8N, Torque=1.2N·m, Power=0.1kW
 - **Performance:** Completes in <0.4 seconds
 
-### ✅ Interactive GUI Simulator (`gui/`)
+### ✅ GUI Components (`gui/`)
 - **Status:** FULLY WORKING
 - **Components Tested:**
   - Main GUI application ✅
-  - Control panel (sliders, buttons) ✅
+  - Control panel (sliders and buttons) ✅
   - Display panel (forces/moments) ✅
   - Plot panel (real-time graphs) ✅
   - Simulation engine ✅
 - **Features:** Real-time control, live plotting, force display
-- **Launch:** `python helicopter_simulator_gui_new.py`
-
-### ✅ Individual Design Generator (`individual_design/`)
-- **Status:** FULLY WORKING
-- **Components Tested:**
-  - Design requirements management ✅
-  - Rotor designer (main, tail, pusher) ✅
-  - Aircraft sizer and mass estimation ✅
-  - Performance analyzer ✅
-  - Plot generator ✅
-  - Report generator ✅
-- **Output:** Complete compound helicopter design with plots
-- **Generated Files:** 6 files including JSON, plots, and summary
 
 ### ✅ System Integration
 - **Status:** FULLY WORKING
 - **Integration Points Tested:**
   - GUI ↔ Flight Simulation ✅
-  - Individual Design ↔ Flight Simulation ✅
   - Shared utilities and calculations ✅
   - Cross-module data flow ✅
 
@@ -62,7 +48,6 @@
 |-----------|---------------|--------------|---------|
 | Core Simulation | 0.38s | <50MB | ✅ Excellent |
 | GUI Startup | <2s | <100MB | ✅ Good |
-| Design Generator | <5s | <150MB | ✅ Good |
 | Test Suite | <10s | <100MB | ✅ Excellent |
 
 ---
@@ -84,7 +69,6 @@
 ```
 ✅ flight_sim_part1/          Core simulation (11 files)
 ✅ gui/                       GUI components (6 files)  
-✅ individual_design/         Design system (8 files)
 ✅ mission planner/           Mission planning
 ✅ report_output/             Report generation
 ✅ test_integration/          Integration tests
@@ -127,20 +111,12 @@ python test_plan.py
 # Run core flight simulation
 python flight_sim_part1/main.py
 
-# Launch interactive GUI
-python helicopter_simulator_gui_new.py
-
-# Generate helicopter design
-python individual_design_generator_new.py
-
 # Check project status
 python project_status.py
 ```
 
 ### Expected Outputs:
 - **Core Sim:** Numerical thrust, torque, power values
-- **GUI:** Interactive window with controls and plots
-- **Design:** Complete helicopter specifications + plots
 - **Tests:** 100% pass rate with detailed results
 
 ---
@@ -152,7 +128,6 @@ python project_status.py
 ### ✅ What Works:
 - Complete flight dynamics simulation
 - Interactive GUI with real-time controls
-- Comprehensive helicopter design system
 - All component integration
 - Automated testing suite
 - Performance optimization
@@ -163,7 +138,6 @@ python project_status.py
 - Mission planning studies
 - Performance optimization
 - Interactive flight simulation
-- Helicopter design projects
 
 ### 📈 Quality Metrics:
 - **Code Quality:** Modular, well-documented

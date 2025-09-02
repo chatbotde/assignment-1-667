@@ -45,9 +45,8 @@ NEXT STEPS
 ==========
 1. Add CFD comparison data if available
 2. Create algorithm flow diagrams
-3. Compile individual helicopter design
-4. Add bonus flight simulator GUI
-5. Prepare presentation slides
+3. Add bonus flight simulator GUI
+4. Prepare presentation slides
 
 OBSERVATIONS & CONCLUSIONS
 =========================

@@ -2,7 +2,7 @@
 =====================================
 
 A comprehensive helicopter flight simulation system with interactive GUI, 
-individual helicopter design capabilities, mission planning, and performance 
+team-based helicopter design capabilities, mission planning, and performance 
 optimization tools. Fully tested and ready for academic research, assignments, 
 and flight dynamics analysis.
 
@@ -17,9 +17,6 @@ and flight dynamics analysis.
 
 3. Run your first simulation:
    python flight_sim_part1/main.py
-
-4. Launch interactive GUI:
-   python helicopter_simulator_gui_new.py
 
 📋 SYSTEM REQUIREMENTS
 =====================
@@ -60,23 +57,12 @@ gui/                           - Interactive GUI components
 ├── plot_panel.py             - Real-time plotting
 └── simulation_engine.py      - GUI simulation backend
 
-individual_design/             - Helicopter design system
-├── compound_helicopter_designer.py - Main design engine
-├── design_requirements.py    - Design specifications
-├── rotor_designer.py         - Rotor design calculations
-├── aircraft_sizer.py         - Mass and sizing
-├── performance_analyzer.py   - Performance analysis
-├── plot_generator.py         - Design visualization
-└── report_generator.py       - Design documentation
-
 mission planner/               - Mission planning module
 mission_controller/            - Mission execution system
 test_integration/              - Automated testing suite
 report_output/                 - Generated reports and outputs
 
 Main Executables:
-- helicopter_simulator_gui_new.py    - Interactive GUI simulator
-- individual_design_generator_new.py - Helicopter design tool
 - test_plan.py                       - Comprehensive test suite
 - quick_test.py                      - Quick verification
 - project_status.py                  - System status overview
@@ -91,32 +77,12 @@ Main Executables:
    Time: <0.4 seconds
    Purpose: Basic helicopter flight dynamics
 
-2. INTERACTIVE GUI SIMULATOR:
-   python helicopter_simulator_gui_new.py
-   
-   Features:
-   - Real-time flight controls (collective, cyclic, pedals)
-   - Live performance plots and graphs
-   - Interactive parameter adjustment
-   - Force and moment displays
-   - Flight visualization
-
-3. HELICOPTER DESIGN GENERATOR:
-   python individual_design_generator_new.py
-   
-   Generates:
-   - Complete compound helicopter specifications
-   - Performance analysis plots (6 PNG files)
-   - Design summary report
-   - JSON configuration files
-   - Hover mission analysis
-
-4. SYSTEM TESTING:
+2. SYSTEM TESTING:
    python test_plan.py          # Full automated test suite
    python quick_test.py         # Quick verification
    python project_status.py     # Live system demonstration
 
-5. PROJECT STATUS CHECK:
+3. PROJECT STATUS CHECK:
    python project_status.py
    
    Shows:
@@ -142,12 +108,6 @@ Rotor Design:
 - Twist distribution: Linear/custom
 - Airfoil characteristics
 
-Design Requirements (individual_design/design_requirements.py):
-- Mission profiles
-- Performance targets
-- Weight constraints
-- Power requirements
-
 📊 EXPECTED OUTPUTS
 ==================
 
@@ -156,19 +116,6 @@ Core Simulation Results:
 - Torque: 1.2 N·m
 - Power: 0.1 kW
 - Execution time: <0.4 seconds
-
-GUI Simulator:
-- Interactive control window
-- Real-time plotting
-- Force/moment displays
-- Parameter adjustment sliders
-
-Individual Design Generator:
-- compound_helicopter_design.json (specifications)
-- design_summary.txt (readable summary)
-- hover_analysis.json (performance data)
-- 6 PNG performance plots
-- Complete design documentation
 
 Test Results:
 - 100% pass rate (8/8 tests)
@@ -192,15 +139,11 @@ Common Issues and Solutions:
    → Always run from project root directory
    → Don't run from subdirectories
 
-4. GUI doesn't open
-   → Check tkinter: python -c "import tkinter; print('OK')"
-   → Try: python quick_test.py first
-
-5. Test failures
+4. Test failures
    → Run: python test_plan.py for detailed diagnostics
    → Check dependencies with project_status.py
 
-6. Performance issues
+5. Performance issues
    → Reduce number of blade elements in user_inputs.py
    → Use smaller rotor radius for faster calculations
 

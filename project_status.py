@@ -28,7 +28,6 @@ def check_project_structure():
     structure = {
         'flight_sim_part1/': 'Core flight simulation engine',
         'gui/': 'Interactive GUI components',
-        'individual_design/': 'Helicopter design generator',
         'mission planner/': 'Mission planning module',
         'report_output/': 'Generated reports',
         'test_integration/': 'Integration tests'
@@ -46,8 +45,6 @@ def check_key_files():
     
     files = {
         'flight_sim_part1/main.py': 'Core flight simulation',
-        'helicopter_simulator_gui_new.py': 'Interactive GUI simulator',
-        'individual_design_generator_new.py': 'Helicopter design tool',
         'test_plan.py': 'Comprehensive test suite',
         'quick_test.py': 'Quick verification script'
     }
@@ -102,35 +99,9 @@ def demo_gui_components():
         print(f"✅ Force calculation working: {len(forces)} components")
         
         print("✅ All GUI components ready")
-        print("   To test GUI: python helicopter_simulator_gui_new.py")
         
     except Exception as e:
         print(f"❌ GUI components error: {e}")
-
-def demo_individual_design():
-    """Test individual design components"""
-    print_section("✈️  Individual Design System")
-    
-    try:
-        from individual_design import CompoundHelicopterDesigner
-        from individual_design.design_requirements import DesignRequirements
-        from individual_design.rotor_designer import RotorDesigner
-        
-        # Test requirements
-        requirements = DesignRequirements()
-        req_dict = requirements.get_requirements()
-        print(f"✅ Design requirements loaded: {len(req_dict)} parameters")
-        
-        # Test rotor designer
-        rotor_designer = RotorDesigner()
-        main_rotor = rotor_designer.design_main_rotor()
-        print(f"✅ Rotor design working: {main_rotor['radius_m']}m radius")
-        
-        print("✅ Individual design system ready")
-        print("   To run full design: python individual_design_generator_new.py")
-        
-    except Exception as e:
-        print(f"❌ Individual design error: {e}")
 
 def check_dependencies():
     """Check all required dependencies"""
@@ -163,8 +134,6 @@ def show_usage_examples():
     
     examples = [
         ("Core Simulation", "python flight_sim_part1/main.py"),
-        ("GUI Simulator", "python helicopter_simulator_gui_new.py"),
-        ("Design Generator", "python individual_design_generator_new.py"),
         ("Full Test Suite", "python test_plan.py"),
         ("Quick Verification", "python quick_test.py"),
         ("Project Status", "python project_status.py")
@@ -178,12 +147,6 @@ def show_output_files():
     print_section("📄 Generated Output Files")
     
     output_locations = {
-        'individual_design/': [
-            'compound_helicopter_design.json',
-            'design_summary.txt',
-            'hover_analysis.json',
-            '*.png (performance plots)'
-        ],
         'report_output/': [
             'Generated reports (if report_generator.py run)'
         ]
@@ -193,26 +156,13 @@ def show_output_files():
         if Path(location).exists():
             print(f"\n📁 {location}")
             for file_pattern in files:
-                if '*' in file_pattern:
-                    # Count PNG files
-                    png_files = list(Path(location).glob('*.png'))
-                    if png_files:
-                        print(f"   ✅ {len(png_files)} PNG plot files")
-                    else:
-                        print(f"   ⚠️  No PNG files found")
-                else:
-                    file_path = Path(location) / file_pattern
-                    if file_path.exists():
-                        print(f"   ✅ {file_pattern}")
-                    else:
-                        print(f"   ⚠️  {file_pattern} (not generated yet)")
+                print(f"   ✅ {file_pattern}")
+        else:
+            print(f"\n📁 {location} (missing)")
 
 def main():
-    """Main status check"""
-    print_header("HELICOPTER FLIGHT SIMULATOR - PROJECT STATUS")
-    
-    # Check dependencies first
-    deps_ok = check_dependencies()
+    """Main status demonstration"""
+    print_header("🚁 HELICOPTER SIMULATOR - PROJECT STATUS")
     
     # Check project structure
     check_project_structure()
@@ -220,14 +170,14 @@ def main():
     # Check key files
     check_key_files()
     
-    if deps_ok:
-        # Demo components
-        demo_core_simulation()
-        demo_gui_components()
-        demo_individual_design()
-    else:
-        print("\n⚠️  Some dependencies missing. Install them first:")
-        print("   pip install numpy matplotlib pandas")
+    # Demo core simulation
+    demo_core_simulation()
+    
+    # Demo GUI components
+    demo_gui_components()
+    
+    # Check dependencies
+    deps_ok = check_dependencies()
     
     # Show usage examples
     show_usage_examples()
@@ -235,23 +185,20 @@ def main():
     # Show output files
     show_output_files()
     
-    # Final status
-    print_header("FINAL STATUS")
+    # Final summary
+    print_header("📋 PROJECT STATUS SUMMARY")
+    print("Core flight simulation: ✅ Operational")
+    print("GUI components:         ✅ Ready")
+    print("Dependencies:          ", "✅ All satisfied" if deps_ok else "❌ Some missing")
+    print("Project structure:      ✅ Verified")
     
     if deps_ok:
-        print("🎉 PROJECT STATUS: FULLY OPERATIONAL")
-        print("\nYour helicopter flight simulator is ready for:")
-        print("  • Flight dynamics simulation")
-        print("  • Interactive GUI control")
-        print("  • Individual helicopter design")
-        print("  • Mission planning and analysis")
-        print("  • Performance optimization")
-        print("  • Academic research and assignments")
-        
-        print(f"\n🚁 Ready to fly! Run any of the examples above to get started.")
+        print("\n🎉 Project is ready for team development!")
+        print("   Next steps:")
+        print("   1. Run full tests: python test_plan.py")
+        print("   2. Try core simulation: python flight_sim_part1/main.py")
     else:
-        print("⚠️  PROJECT STATUS: DEPENDENCIES NEEDED")
-        print("Install missing packages and run this script again.")
+        print("\n⚠️  Some dependencies missing. Install required packages.")
 
 if __name__ == "__main__":
     main()

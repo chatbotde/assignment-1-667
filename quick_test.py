@@ -53,10 +53,7 @@ def check_core_files():
     essential_files = [
         'flight_sim_part1/main.py',
         'flight_sim_part1/user_inputs.py',
-        'gui/helicopter_gui_main.py',
-        'individual_design/__init__.py',
-        'helicopter_simulator_gui_new.py',
-        'individual_design_generator_new.py'
+        'gui/helicopter_gui_main.py'
     ]
     
     missing = []
@@ -117,7 +114,6 @@ def main():
         print("\nNext steps:")
         print("1. Run full tests: python test_plan.py")
         print("2. Try core simulation: python flight_sim_part1/main.py")
-        print("3. Try GUI: python helicopter_simulator_gui_new.py")
         return True
     else:
         print("⚠️  Some checks failed. Fix issues above before proceeding.")

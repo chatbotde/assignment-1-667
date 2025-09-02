@@ -37,26 +37,6 @@ Cycle-averaged: Thrust=2.8 N, Torque=1.2 N·m, Power=0.1 kW
 Stabilizers: {'L_h': 0.0, 'Y_v': 0.0, 'M_pitch': -0.0, 'M_yaw': 0.0}
 ```
 
-#### GUI Interface
-```bash
-python helicopter_simulator_gui_new.py
-```
-**Expected:** Interactive GUI window opens with:
-- Control sliders (collective, cyclic, pedals)
-- Real-time force/moment displays
-- Live plotting capabilities
-- Reset and control buttons
-
-#### Individual Design Generator
-```bash
-python individual_design_generator_new.py
-```
-**Expected Output:** Complete design process with:
-- Compound helicopter specifications
-- Performance plots generated
-- Design summary created
-- Multiple output files in `individual_design/` folder
-
 ## 📋 Detailed Testing Procedures
 
 ### Test 1: Dependencies and Environment
@@ -94,19 +74,7 @@ python -c "from gui.simulation_engine import SimulationEngine; engine=Simulation
 python -c "from gui.control_panel import ControlPanel; print('Control panel module OK')"
 ```
 
-### Test 4: Individual Design Components
-
-#### Test Design Requirements
-```python
-python -c "from individual_design.design_requirements import DesignRequirements; req=DesignRequirements(); print('Requirements:', len(req.get_requirements()))"
-```
-
-#### Test Rotor Designer
-```python
-python -c "from individual_design.rotor_designer import RotorDesigner; rd=RotorDesigner(); rotor=rd.design_main_rotor(); print('Main rotor designed')"
-```
-
-### Test 5: Integration Testing
+### Test 4: Integration Testing
 
 #### GUI-FlightSim Integration
 ```python
@@ -138,10 +106,9 @@ print(f'Simulation completed in {end-start:.3f} seconds')
 ```
 
 ### Test GUI Responsiveness
-1. Launch GUI: `python helicopter_simulator_gui_new.py`
-2. Move sliders rapidly
-3. Verify real-time updates
-4. Check plot responsiveness
+1. Move sliders rapidly
+2. Verify real-time updates
+3. Check plot responsiveness
 
 ## 📊 Output Verification
 
@@ -155,13 +122,6 @@ print(f'Simulation completed in {end-start:.3f} seconds')
 - **Real-time plots:** Should update smoothly
 - **Force displays:** Should respond to control inputs
 - **Performance metrics:** Should show reasonable values
-
-### Individual Design Outputs
-Check `individual_design/` folder for:
-- `compound_helicopter_design.json` - Complete design data
-- `design_summary.txt` - Human-readable summary
-- `*.png` files - Performance plots
-- `hover_analysis.json` - Mission analysis
 
 ## 🐛 Troubleshooting
 
@@ -197,13 +157,10 @@ pip install numpy matplotlib pandas
 ### Expected Performance (Default Configuration)
 - **Core simulation:** < 0.1 seconds
 - **GUI startup:** < 2 seconds  
-- **Individual design:** < 5 seconds
-- **Plot generation:** < 3 seconds
 
 ### Memory Usage
 - **Core simulation:** < 50 MB
 - **GUI application:** < 100 MB
-- **Design generator:** < 150 MB
 
 ## 🎯 Test Success Criteria
 
@@ -211,9 +168,8 @@ pip install numpy matplotlib pandas
 1. **Automated test suite:** 100% pass rate
 2. **Core simulation:** Produces numerical outputs
 3. **GUI:** Opens and responds to controls
-4. **Design generator:** Creates all output files
-5. **Integration:** Components work together
-6. **Performance:** Completes within expected timeframes
+4. **Integration:** Components work together
+5. **Performance:** Completes within expected timeframes
 
 ### ⚠️ Warning Signs:
 - Tip Mach warnings (adjust RPM in user_inputs.py)
@@ -228,7 +184,6 @@ If all tests pass, your helicopter flight simulator is fully operational and rea
 - Mission planning
 - Performance optimization
 - GUI-based flight simulation
-- Individual helicopter design
 - Academic assignments and research
 
 **Happy Flying!** 🚁✈️

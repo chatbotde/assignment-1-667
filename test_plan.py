@@ -6,9 +6,8 @@ Comprehensive Testing Plan for Helicopter Flight Simulator Project
 This script tests all major components of the helicopter flight simulator:
 1. Core flight simulation (flight_sim_part1)
 2. GUI interface (gui package)
-3. Individual design generator (individual_design package)
-4. Integration between components
-5. Performance and error handling
+3. Integration between components
+4. Performance and error handling
 
 Run this script to verify everything is working properly.
 """
@@ -159,66 +158,12 @@ def test_gui_components():
             raise
 
 
-def test_individual_design():
-    """Test individual design generator components"""
-    from individual_design import CompoundHelicopterDesigner
-    from individual_design.design_requirements import DesignRequirements
-    from individual_design.rotor_designer import RotorDesigner
-    from individual_design.aircraft_sizer import AircraftSizer
-    
-    print("✓ All individual design modules imported successfully")
-    
-    # Test requirements
-    requirements = DesignRequirements()
-    print(f"✓ Design requirements loaded: {len(requirements.get_requirements())} requirements")
-    
-    # Test rotor designer
-    rotor_designer = RotorDesigner()
-    main_rotor = rotor_designer.design_main_rotor()
-    print(f"✓ Main rotor designed: R={main_rotor['radius_m']:.1f}m")
-    
-    # Test aircraft sizer
-    sizer = AircraftSizer()
-    # Create dummy components for testing
-    dummy_rotor = {"radius_m": 8.5, "num_blades": 4}
-    dummy_wings = {"area_m2": 20.0}
-    component_masses = sizer.calculate_component_masses(dummy_rotor, dummy_rotor, dummy_rotor, dummy_wings)
-    print(f"✓ Component masses calculated: {len(component_masses)} components")
-
-
-def test_individual_design_full():
-    """Test full individual design generation"""
-    from individual_design import CompoundHelicopterDesigner
-    
-    designer = CompoundHelicopterDesigner()
-    
-    # Run design process
-    print("Running compound helicopter design...")
-    designer.design_compound_helicopter()
-    print("✓ Compound helicopter design completed")
-    
-    # Check output files exist
-    output_dir = Path("individual_design")
-    expected_files = [
-        "compound_helicopter_design.json",
-        "design_summary.txt"
-    ]
-    
-    for filename in expected_files:
-        filepath = output_dir / filename
-        if filepath.exists():
-            print(f"✓ Output file created: {filename}")
-        else:
-            print(f"⚠️  Output file missing: {filename}")
-
-
 def test_file_structure():
     """Test that all expected files and directories exist"""
     expected_structure = {
         'flight_sim_part1': ['main.py', 'user_inputs.py', 'atmosphere.py', 'integrators.py'],
         'gui': ['helicopter_gui_main.py', 'control_panel.py', 'simulation_engine.py'],
-        'individual_design': ['__init__.py', 'helicopter_designer.py', 'design_requirements.py'],
-        '.': ['README.md', 'README.txt', 'helicopter_simulator_gui_new.py']
+        '.': ['README.md', 'README.txt']
     }
     
     for directory, files in expected_structure.items():
@@ -255,12 +200,6 @@ def test_integration():
     engine.calculate_forces_and_moments(controls)
     forces = engine.get_forces_moments()
     print("✓ GUI-FlightSim integration working")
-    
-    # Test that individual design can use flight sim components
-    from individual_design.rotor_designer import RotorDesigner
-    rotor_designer = RotorDesigner()
-    main_rotor = rotor_designer.design_main_rotor()
-    print("✓ IndividualDesign-FlightSim integration working")
 
 
 def main():
@@ -278,10 +217,6 @@ def main():
     
     # GUI tests (may skip if no display)
     runner.test("GUI Components", test_gui_components)
-    
-    # Individual design tests
-    runner.test("Individual Design Components", test_individual_design)
-    runner.test("Individual Design Full Run", test_individual_design_full)
     
     # Integration tests
     runner.test("Component Integration", test_integration)
