@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Report Generator for HAL Helicopter Assignment
+Report Generator for HAL Helicopter 
 Generates all required plots and analysis for the team report
 """
 
