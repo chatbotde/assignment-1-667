@@ -1,0 +1,50 @@
+
+MAXIMUM ROTOR THRUST CALCULATION OUTPUT
+=======================================
+
+1. MAIN ROTOR SPECIFICATIONS
+--------------------------
+Radius: 8.5 m
+RPM: 320
+Number of blades: 4
+Airfoil: NACA 0012 modified
+
+2. MAIN ROTOR THRUST
+-------------------
+Sea Level Maximum Thrust: 56475 N
+Sea Level Maximum Equivalent Weight: 5757 kg
+
+At 2000m AMSL Maximum Thrust: 39796 N
+At 2000m AMSL Maximum Equivalent Weight: 4057 kg
+
+3. TAIL ROTOR SPECIFICATIONS
+---------------------------
+Radius: 1.8 m
+RPM: 1600
+Number of blades: 4
+Airfoil: NACA 0012
+
+4. TAIL ROTOR THRUST
+------------------
+Sea Level Maximum Thrust (estimated): 34306 N
+Sea Level Maximum Equivalent Weight: 3497 kg
+
+At 2000m AMSL Maximum Thrust: 28187 N
+At 2000m AMSL Maximum Equivalent Weight: 2873 kg
+
+5. THRUST CALCULATION METHODOLOGY
+-------------------------------
+- Main rotor thrust calculated using Blade Element Momentum Theory (BEMT)
+- Includes Prandtl tip loss correction
+- Based on airfoil characteristics and rotor geometry
+- Accounts for air density variation with altitude
+- Considers induced velocity and blade aerodynamics
+
+6. DESIGN IMPLICATIONS
+--------------------
+- Maximum takeoff weight limited to 5757 kg at sea level
+- Maximum takeoff weight limited to 4057 kg at 2000m AMSL
+- Tail rotor provides 34306 N of anti-torque thrust at sea level
+- Tail rotor size optimized for main rotor torque counteraction
+- Design provides adequate yaw control authority
+
