@@ -30,8 +30,8 @@ def check_project_structure():
         'gui/': 'Interactive GUI components',
         'individual_design/': 'Helicopter design generator',
         'mission planner/': 'Mission planning module',
-        'report_output/': 'Generated reports',
-        'test_integration/': 'Integration tests'
+        'mission_controller/': 'Mission controller system',
+        'report_output/': 'Generated reports'
     }
     
     for folder, description in structure.items():
@@ -112,7 +112,7 @@ def demo_individual_design():
     print_section("✈️  Individual Design System")
     
     try:
-        from individual_design import CompoundHelicopterDesigner
+        from individual_design.helicopter_designer import CompoundHelicopterDesigner
         from individual_design.design_requirements import DesignRequirements
         from individual_design.rotor_designer import RotorDesigner
         

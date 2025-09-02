@@ -17,6 +17,7 @@ def check_python_version():
     if version.major < 3 or (version.major == 3 and version.minor < 7):
         raise RuntimeError(f"Python 3.7+ required, found {version.major}.{version.minor}")
     print(f"✓ Python {version.major}.{version.minor}.{version.micro} - Compatible")
+    return True
 
 def check_dependencies():
     """Check required packages"""
@@ -30,20 +31,13 @@ def check_dependencies():
         except ImportError:
             missing.append(package)
             print(f"❌ {package} - Missing")
-    
-    # Check tkinter separately (different import behavior)
-    try:
-        import tkinter
-        print("✓ tkinter - Available")
-    except ImportError:
-        missing.append('tkinter')
-        print("❌ tkinter - Missing")
+        except Exception as e:
+            print(f"❌ {package} - Error: {e}")
+            missing.append(package)
     
     if missing:
         print(f"\nMissing packages: {', '.join(missing)}")
-        print("Install with: pip install " + " ".join(pkg for pkg in missing if pkg != 'tkinter'))
-        if 'tkinter' in missing:
-            print("For tkinter: install python3-tk (Linux) or reinstall Python")
+        print("Install with: pip install " + " ".join(missing))
         return False
     
     return True
@@ -54,9 +48,7 @@ def check_core_files():
         'flight_sim_part1/main.py',
         'flight_sim_part1/user_inputs.py',
         'gui/helicopter_gui_main.py',
-        'individual_design/__init__.py',
-        'helicopter_simulator_gui_new.py',
-        'individual_design_generator_new.py'
+        'individual_design/helicopter_designer.py'
     ]
     
     missing = []
@@ -104,7 +96,8 @@ def main():
         print(f"\n{name}:")
         print("-" * 20)
         try:
-            if check_func():
+            result = check_func()
+            if result:
                 passed += 1
         except Exception as e:
             print(f"❌ {name} failed: {e}")
@@ -117,7 +110,6 @@ def main():
         print("\nNext steps:")
         print("1. Run full tests: python test_plan.py")
         print("2. Try core simulation: python flight_sim_part1/main.py")
-        print("3. Try GUI: python helicopter_simulator_gui_new.py")
         return True
     else:
         print("⚠️  Some checks failed. Fix issues above before proceeding.")

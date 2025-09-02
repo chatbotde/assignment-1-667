@@ -1,0 +1,9 @@
+Main Rotor Performance Error Metrics
+========================================
+
+CT Mean Absolute Error:     0.006316
+CQ Mean Absolute Error:     0.001307
+CT Root Mean Square Error:  0.008915
+CQ Root Mean Square Error:  0.001875
+CT Mean Relative Error:     inf%
+CQ Mean Relative Error:     64.23%
