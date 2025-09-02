@@ -5,9 +5,8 @@ Comprehensive Testing Plan for Helicopter Flight Simulator Project
 
 This script tests all major components of the helicopter flight simulator:
 1. Core flight simulation (flight_sim_part1)
-2. GUI interface (gui package)
-3. Integration between components
-4. Performance and error handling
+2. Integration between components
+3. Performance and error handling
 
 Run this script to verify everything is working properly.
 """
@@ -61,14 +60,11 @@ class TestRunner:
 
 def test_imports():
     """Test that all required packages can be imported"""
-    required_packages = ['numpy', 'matplotlib', 'pandas', 'tkinter']
+    required_packages = ['numpy', 'matplotlib', 'pandas']
     
     for package in required_packages:
         try:
-            if package == 'tkinter':
-                import tkinter
-            else:
-                importlib.import_module(package)
+            importlib.import_module(package)
             print(f"✓ {package} imported successfully")
         except ImportError as e:
             raise ImportError(f"Required package '{package}' not available: {e}")
@@ -78,7 +74,7 @@ def test_flight_sim_core():
     """Test the core flight simulation components"""
     sys.path.append('flight_sim_part1')
     
-    # Test individual modules
+    # Test flight simulation modules
     from user_inputs import get_user_inputs, build_rotor
     from atmosphere import isa_properties
     from integrators import cycle_integrator
@@ -123,46 +119,10 @@ def test_flight_sim_main():
     print("✓ Main flight simulation completed successfully")
 
 
-def test_gui_components():
-    """Test GUI components can be imported and initialized"""
-    try:
-        from gui.helicopter_gui_main import HelicopterSimulatorGUI
-        from gui.control_panel import ControlPanel
-        from gui.display_panel import DisplayPanel
-        from gui.plot_panel import PlotPanel
-        from gui.simulation_engine import SimulationEngine
-        
-        print("✓ All GUI components imported successfully")
-        
-        # Test simulation engine (non-GUI component)
-        engine = SimulationEngine()
-        print("✓ Simulation engine initialized")
-        
-        # Test basic calculation with proper control format
-        controls = {
-            'collective_pitch': 0.5,
-            'cyclic_pitch': 0.0,
-            'tail_rotor_pitch': 0.0,
-            'throttle': 0.5,
-            'altitude': 1000
-        }
-        engine.calculate_forces_and_moments(controls)
-        forces = engine.get_forces_moments()
-        print(f"✓ Force calculation test: {len(forces)} components")
-        
-    except ImportError as e:
-        if "tkinter" in str(e).lower():
-            print("⚠️  GUI test skipped - tkinter not available (common in headless environments)")
-            return
-        else:
-            raise
-
-
 def test_file_structure():
     """Test that all expected files and directories exist"""
     expected_structure = {
         'flight_sim_part1': ['main.py', 'user_inputs.py', 'atmosphere.py', 'integrators.py'],
-        'gui': ['helicopter_gui_main.py', 'control_panel.py', 'simulation_engine.py'],
         '.': ['README.md', 'README.txt']
     }
     
@@ -181,25 +141,33 @@ def test_file_structure():
 
 def test_integration():
     """Test integration between different components"""
-    # Test that GUI can use flight sim components
+    # Test that core components work together
     sys.path.append('flight_sim_part1')
-    from user_inputs import get_user_inputs
-    from gui.simulation_engine import SimulationEngine
+    from user_inputs import get_user_inputs, build_rotor
+    from integrators import cycle_integrator
+    from atmosphere import isa_properties
+    from stabilizers import Stabilizers
     
     inputs = get_user_inputs()
-    engine = SimulationEngine()
     
-    # Test that simulation engine can process flight sim data
-    controls = {
-        'collective_pitch': 0.5,
-        'cyclic_pitch': 0.0,
-        'tail_rotor_pitch': 0.0,
-        'throttle': 0.5,
-        'altitude': 1000
-    }
-    engine.calculate_forces_and_moments(controls)
-    forces = engine.get_forces_moments()
-    print("✓ GUI-FlightSim integration working")
+    # Test full simulation workflow
+    import math
+    rho, a = isa_properties(inputs["condition"]["alt_m"])
+    rpm = inputs["condition"]["rpm"]
+    omega = 2*math.pi*rpm/60.0
+    V = inputs["condition"]["V_forward_mps"]
+    
+    # Build rotor
+    rotor = build_rotor(inputs["rotor"])
+    
+    # Run simulation
+    T, Q, P = cycle_integrator(rotor, V, omega, rho)
+    print(f"✓ Integrated simulation: T={T:.1f}N, Q={Q:.1f}N·m, P={P/1000:.1f}kW")
+    
+    # Test stabilizers
+    stab = Stabilizers(**inputs["stabilizers"])
+    fm = stab.forces_moments(rho, V)
+    print(f"✓ Integrated stabilizers: {len(fm)} force/moment components")
 
 
 def main():
@@ -214,9 +182,6 @@ def main():
     runner.test("File Structure", test_file_structure)
     runner.test("Flight Sim Core Components", test_flight_sim_core)
     runner.test("Flight Sim Main Execution", test_flight_sim_main)
-    
-    # GUI tests (may skip if no display)
-    runner.test("GUI Components", test_gui_components)
     
     # Integration tests
     runner.test("Component Integration", test_integration)
